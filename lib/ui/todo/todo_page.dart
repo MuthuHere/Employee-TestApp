@@ -4,9 +4,13 @@ import 'package:silver_lake_app/ui/todo/todo_list_widget.dart';
 import 'package:silver_lake_app/ui/models/todo/todo_response.dart';
 import 'package:silver_lake_app/utils/widget_loading_indicator.dart';
 
+
+///class TodoPage is loading data with the EmpId
 class TodoPage extends StatefulWidget {
   final int empID;
   final String empName;
+  final String EMP_TODO_LIST =
+      'https://jsonplaceholder.typicode.com/todos?userId=';
 
   TodoPage(this.empID, this.empName);
 
@@ -38,7 +42,6 @@ class _TodoState extends State<TodoPage> {
           brightness: Brightness.light,
         ),
         home: new Scaffold(
-
             body: Center(
                 child: _isLoading
                     ? loadingIndicator()
@@ -50,21 +53,16 @@ class _TodoState extends State<TodoPage> {
   void _loadTodoByID(int empID) async {
     setLoadingState(true);
 
-    final responseTodo = await http
-        .get('https://jsonplaceholder.typicode.com/todos?userId=' + empID.toString());
+    final responseTodo =
+        await http.get(widget.EMP_TODO_LIST + empID.toString());
 
     if (responseTodo.statusCode == 200) {
-
-
       return setState(() {
         _empTodoListResponse =
             empTodoDetailResponseFromJson(responseTodo.body.toString());
 
         setLoadingState(false);
-
       });
-
-
     }
   }
 

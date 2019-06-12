@@ -5,9 +5,14 @@ import 'package:silver_lake_app/ui/models/empdetails/emp_detail_response.dart';
 import 'package:silver_lake_app/ui/todo/todo_page.dart';
 import 'package:silver_lake_app/utils/widget_loading_indicator.dart';
 
+
+///_EmployeeDetailState class loading by employee id
+
 class EmployeeDetailPage extends StatefulWidget {
   final int empID;
   final String empName;
+
+  final String EMP_DETAIL_BY_ID = 'https://jsonplaceholder.typicode.com/users/';
 
   EmployeeDetailPage(this.empID, this.empName);
 
@@ -16,7 +21,6 @@ class EmployeeDetailPage extends StatefulWidget {
     return _EmployeeDetailState();
   }
 }
-
 class _EmployeeDetailState extends State<EmployeeDetailPage> {
   bool _isLoading = false;
   EmpDetailResponse _empDetailResponse;
@@ -42,21 +46,23 @@ class _EmployeeDetailState extends State<EmployeeDetailPage> {
     );
   }
 
+  /// by taping view to-do button with next
   void _viewTodo() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TodoPage(widget.empID,widget.empName),
+        builder: (context) => TodoPage(widget.empID, widget.empName),
       ),
     );
-
   }
 
+
+  /// loading employee details by EMP ID
   void _loadEmpByID(int empID) async {
     setLoadingState(true);
 
-    final responseEmpDetail = await http
-        .get('https://jsonplaceholder.typicode.com/users/' + empID.toString());
+    final responseEmpDetail =
+        await http.get(widget.EMP_DETAIL_BY_ID + empID.toString());
 
     if (responseEmpDetail.statusCode == 200) {
       print(responseEmpDetail.toString());
